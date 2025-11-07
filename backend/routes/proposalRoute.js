@@ -60,15 +60,25 @@ router.get("/job/:jobId", async (req, res) => {
 });
 
 // 👤 Get proposals by freelancer
+// ...existing code...
+
+// 👤 Get proposals by freelancer
 router.get("/freelancer/:freelancerId", async (req, res) => {
   try {
     const proposals = await Proposal.find({ freelancer: req.params.freelancerId })
-      .populate("job", "title description");
+      .populate({
+        path: "job",
+        select: "title description createdBy",
+        populate: { path: "createdBy", select: "name email phone" }
+      })
+      .populate({ path: "freelancer", select: "name email" })
+      .lean()
     res.json(proposals);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-});
+})
+
 
 // ✅ Client updates proposal status (accept/reject)
 router.put("/:id/status", async (req, res) => {
