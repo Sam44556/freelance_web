@@ -30,7 +30,7 @@ export default function JobDetails() {
       }
       // Fallback: fetch single job (requires backend GET /jobs/:id)
       try {
-        const res = await fetch(`http://localhost:5000/api/jobs/${jobId}`)
+        const res = await fetch(`${process.env.backend_url}/jobs/${jobId}`)
         if (res.ok) {
           const data = await res.json().catch(() => ({}))
           const j = data.job || data

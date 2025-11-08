@@ -5,7 +5,7 @@ export const useApp = () => useContext(AppContext)
 
 const API =
   (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL) ||
-  process.env.REACT_APP_API_URL ||
+  process.env.backend_url ||
   'http://localhost:5000/api'
 
 export function AppProvider({ children }) {
