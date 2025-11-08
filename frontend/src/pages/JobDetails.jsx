@@ -59,7 +59,7 @@ export default function JobDetails() {
       {job.budget != null && <p className="mt-2 font-medium">Budget: ${job.budget}</p>}
       {job.category && <p className="mt-1 text-sm">Category: {job.category}</p>}
       <p className="mt-1 text-xs">
-        Posted by: {job.createdBy?.name} {job.createdBy?.role && `(${job.createdBy.role})`}
+        Posted by:- {job.createdBy?.name} {job.createdBy?.role && `(${job.createdBy.role})`}
       </p>
 
       <div className="mt-4 flex gap-2">
