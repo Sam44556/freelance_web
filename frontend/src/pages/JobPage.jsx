@@ -34,7 +34,7 @@ export default function JobsPage(){
               <p className="mt-2 font-medium">Budget: ${j.budget}</p>
               <p className="text-xs mt-1">Category: {j.category}</p>
               <div className="flex gap-2 mt-3">
-                <Link to={`/jobs/${j._id}`} className="px-3 py-1 rounded border text-sm">View</Link>
+                <Link to={`/${j._id}`} className="px-3 py-1 rounded border text-sm">View</Link>
                 <button
                   onClick={()=>deleteJob(j._id)}
                   className="px-3 py-1 rounded bg-red-500 text-white text-sm"

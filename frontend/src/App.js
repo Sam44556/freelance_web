@@ -32,9 +32,9 @@ export default function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/jobs" element={<JobsPage />} />
           <Route path="/jobs/create" element={<JobCreate />} />
-          <Route path="/jobs/:jobId" element={<JobDetail />} />
+          <Route path="/:jobId" element={<JobDetail />} />
           <Route path="/jobs/:jobId/propose" element={<ProposalCreate />} />
-          <Route path="/job" element={<JobPage />} />
+          <Route path="/myjobs" element={<JobPage />} />
           <Route path="/freelancers" element={<FreelancersPage />} />
           <Route path="/profile/edit" element={<ProfileEdit />} />
           <Route path="/proposals/me" element={<ProposalsMe />} />
@@ -44,8 +44,8 @@ export default function App() {
           <Route path="/proposals/job/:jobId" element={<ProposalsForJob />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-
           <Route path="*" element={<Navigate to="/" replace />} />
+          
         </Routes>
       </main>
     </div>

@@ -99,7 +99,7 @@ export function AppProvider({ children }) {
     const res = await fetch(`${API}/jobs/${jobId}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clientId: user._id })
+      body: JSON.stringify({ userId: user._id })
     })
     const data = await res.json().catch(() => ({}))
     if (res.ok) {

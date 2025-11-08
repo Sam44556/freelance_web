@@ -40,7 +40,7 @@ export default function JobsPage(){
           className="w-full md:w-1/2 p-2 border rounded"
         />
         {user?.role === 'client' && (
-          <Link to="/job" className="ml-4 px-4 py-2 rounded bg-blue-600 text-white">MY JOBS</Link>
+          <Link to="/myjobs" className="ml-4 px-4 py-2 rounded bg-blue-600 text-white">MY JOBS</Link>
         )}
         <p className="text-xs text-gray-500 mt-1">
           Showing {visibleJobs.length} of {jobs.length} jobs
