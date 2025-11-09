@@ -35,6 +35,9 @@ app.use('/api/profiles', profileRoute)
 app.use('/api/invitations', invitationRoute)
 
 // ✅ Health check route
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully 🚀");
+});
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
 // ✅ 404 handler
