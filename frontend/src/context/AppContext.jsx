@@ -28,7 +28,7 @@ export function AppProvider({ children }) {
   }, [])
 
   async function login({ email, password }) {
-    const res = await fetch(`${API}/users/login`, {
+    const res = await fetch(`${API}/api/users/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -43,7 +43,7 @@ export function AppProvider({ children }) {
   }
 
   async function signup(payload) {
-    const res = await fetch(`${API}/users/signup`, {
+    const res = await fetch(`${API}/api/users/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -66,7 +66,7 @@ export function AppProvider({ children }) {
   async function fetchJobs() {
     setLoading(true)
     try {
-      const res = await fetch(`${API}/jobs`)
+      const res = await fetch(`${API}/api/jobs`)
       const data = await res.json().catch(() => ({}))
       // accept either array or { jobs: [] }
       const list = Array.isArray(data) ? data : (data.jobs || [])
@@ -81,7 +81,7 @@ export function AppProvider({ children }) {
 
   async function createJob(job) {
     if (!user?._id) return { ok: false, message: 'Login first' }
-    const res = await fetch(`${API}/jobs/create`, {
+    const res = await fetch(`${API}/api/jobs/create`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...job, clientId: user._id })
@@ -96,7 +96,7 @@ export function AppProvider({ children }) {
 
   async function deleteJob(jobId) {
     if (!user?._id) return { ok: false, message: 'Login first' }
-    const res = await fetch(`${API}/jobs/${jobId}`, {
+    const res = await fetch(`${API}/api/jobs/${jobId}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: user._id })
@@ -118,7 +118,7 @@ export function AppProvider({ children }) {
 
   // ---------- Profiles ----------
   const getProfiles = async (search = '') => {
-    const url = new URL(`${API}/profiles`)
+    const url = new URL(`${API}/api/profiles`)
     if (search) url.searchParams.set('search', search)
     const res = await fetch(url, { headers: { 'Content-Type': 'application/json' } })
     const data = await res.json().catch(() => ({}))
@@ -127,7 +127,7 @@ export function AppProvider({ children }) {
 
   const getMyProfile = async () => {
     if (!user?._id) return { ok: false, message: 'Login first' }
-    const res = await fetch(`${API}/profiles/me?userId=${encodeURIComponent(user._id)}`, {
+    const res = await fetch(`${API}/api/profiles/me?userId=${encodeURIComponent(user._id)}`, {
       headers: { 'Content-Type': 'application/json' }
     })
     const data = await res.json().catch(() => ({}))
@@ -136,7 +136,7 @@ export function AppProvider({ children }) {
 
   const saveMyProfile = async (profile) => {
     if (!user?._id) return { ok: false, message: 'Login first' }
-    const res = await fetch(`${API}/profiles/me`, {
+    const res = await fetch(`${API}/api/profiles/me`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: user._id, ...profile })
@@ -148,7 +148,7 @@ export function AppProvider({ children }) {
   // ---------- Invitations ----------
   const sendInvitation = async ({ jobId, freelancerId, message }) => {
     if (!user?._id) return { ok: false, message: 'Login first' }
-    const res = await fetch(`${API}/invitations`, {
+    const res = await fetch(`${API}/api/invitations`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ jobId, clientId: user._id, freelancerId, message })
@@ -159,21 +159,21 @@ export function AppProvider({ children }) {
 
   const getInvitationsForMe = async () => {
     if (!user?._id) return { ok: false, message: 'Login first' }
-    const res = await fetch(`${API}/invitations/me?freelancerId=${encodeURIComponent(user._id)}`)
+    const res = await fetch(`${API}/api/invitations/me?freelancerId=${encodeURIComponent(user._id)}`)
     const data = await res.json().catch(() => ({}))
     return { ok: res.ok && data.ok !== false, invitations: data.invitations || [], message: data.message }
   }
 
   const getInvitationsSent = async () => {
     if (!user?._id) return { ok: false, message: 'Login first' }
-    const res = await fetch(`${API}/invitations/sent?clientId=${encodeURIComponent(user._id)}`)
+    const res = await fetch(`${API}/api/invitations/sent?clientId=${encodeURIComponent(user._id)}`)
     const data = await res.json().catch(() => ({}))
     return { ok: res.ok && data.ok !== false, invitations: data.invitations || [], message: data.message }
   }
 
   const respondToInvitation = async (id, status) => {
     if (!user?._id) return { ok: false, message: 'Login first' }
-    const res = await fetch(`${API}/invitations/${id}/status`, {
+    const res = await fetch(`${API}/api/invitations/${id}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status, freelancerId: user._id })
@@ -185,7 +185,7 @@ export function AppProvider({ children }) {
   // ---------- Proposals ----------
   async function createProposal({ jobId, coverLetter, proposedPrice, deliveryTime }) {
     if (!user?._id) return { ok: false, message: 'Login first' }
-    const res = await fetch(`${API}/proposals/create`, {
+    const res = await fetch(`${API}/api/proposals/create`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -203,7 +203,7 @@ export function AppProvider({ children }) {
   async function getProposalsForJob(jobId) {
     if (!jobId) return { ok: false, proposals: [], message: 'Missing jobId' }
     // Optional: include clientId to let backend authorize
-    const url = `${API}/proposals/job/${jobId}?clientId=${encodeURIComponent(user?._id || '')}`
+    const url = `${API}/api/proposals/job/${jobId}?clientId=${encodeURIComponent(user?._id || '')}`
     const res = await fetch(url)
     const data = await res.json().catch(() => ({}))
     if (res.ok && Array.isArray(data)) return { ok: true, proposals: data }
@@ -213,14 +213,14 @@ export function AppProvider({ children }) {
   async function getProposalsByFreelancer(freelancerId) {
     const id = freelancerId || user?._id
     if (!id) return { ok: false, proposals: [], message: 'Missing freelancer id' }
-    const res = await fetch(`${API}/proposals/freelancer/${id}`)
+    const res = await fetch(`${API}/api/proposals/freelancer/${id}`)
     const data = await res.json().catch(() => ({}))
     if (res.ok && Array.isArray(data)) return { ok: true, proposals: data }
     return { ok: false, proposals: [], message: data?.message || 'Failed to load proposals' }
   }
 
   async function updateProposalStatus(proposalId, status) {
-    const res = await fetch(`${API}/proposals/${proposalId}/status`, {
+    const res = await fetch(`${API}/api/proposals/${proposalId}/status`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
