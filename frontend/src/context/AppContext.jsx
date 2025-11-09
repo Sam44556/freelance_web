@@ -43,7 +43,7 @@ export function AppProvider({ children }) {
   }
 
   async function signup(payload) {
-    const res = await fetch(`${API}/api/users/signup`, {
+    const res = await fetch(`${API}/api/users/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
