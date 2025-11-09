@@ -63,7 +63,7 @@ export function AppProvider({ children }) {
   async function fetchJobs() {
     setLoading(true)
     try {
-      const res = await fetch(`${API}/api/jobs`)
+      const res = await fetch(`${API}/api/jos`)
       const data = await res.json().catch(() => ({}))
       // accept either array or { jobs: [] }
       const list = Array.isArray(data) ? data : (data.jobs || [])
