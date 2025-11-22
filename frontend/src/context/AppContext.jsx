@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 const AppContext = createContext(null)
 export const useApp = () => useContext(AppContext)
 
-const API = process.env.backend_url || 'http://localhost:5000/api'
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000'
 
 export function AppProvider({ children }) {
   // Auth/user
