@@ -25,33 +25,51 @@ export function AppProvider({ children }) {
   }, [])
 
   async function login({ email, password }) {
-    const res = await fetch(`${API}/api/users/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    })
-    const data = await res.json().catch(() => ({}))
-    if (res.ok && data?.user) {
-      setUser(data.user)
-      localStorage.setItem('user', JSON.stringify(data.user))
-      return { ok: true, user: data.user }
+    try {
+      console.log('Attempting login to:', `${API}/api/users/login`)
+      const res = await fetch(`${API}/api/users/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+      console.log('Login response status:', res.status)
+      const data = await res.json().catch(() => ({}))
+      console.log('Login response data:', data)
+      
+      if (res.ok && data?.user) {
+        setUser(data.user)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        return { ok: true, user: data.user }
+      }
+      return { ok: false, message: data?.message || 'Login failed' }
+    } catch (error) {
+      console.error('Login error:', error)
+      return { ok: false, message: 'Network error - please check your connection' }
     }
-    return { ok: false, message: data?.message || 'Login failed' }
   }
 
   async function signup(payload) {
-    const res = await fetch(`${API}/api/users/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-    const data = await res.json().catch(() => ({}))
-    if (res.ok && data?.user) {
-      setUser(data.user)
-      localStorage.setItem('user', JSON.stringify(data.user))
-      return { ok: true, user: data.user }
+    try {
+      console.log('Attempting signup to:', `${API}/api/users/register`)
+      const res = await fetch(`${API}/api/users/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      console.log('Signup response status:', res.status)
+      const data = await res.json().catch(() => ({}))
+      console.log('Signup response data:', data)
+      
+      if (res.ok && data?.user) {
+        setUser(data.user)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        return { ok: true, user: data.user }
+      }
+      return { ok: false, message: data?.message || 'Signup failed' }
+    } catch (error) {
+      console.error('Signup error:', error)
+      return { ok: false, message: 'Network error - please check your connection' }
     }
-    return { ok: false, message: data?.message || 'Signup failed' }
   }
 
   function logout() {

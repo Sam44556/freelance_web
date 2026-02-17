@@ -8,6 +8,7 @@ import Landing from './pages/Landing'
 import JobsPage from './pages/JobsPage'
 import FreelancersPage from './pages/FreelancersPage'
 import ProfileEdit from './pages/ProfileEdit'
+import ProfilePage from './pages/ProfilePage'
 import NotificationsFreelancer from './pages/NotificationsFreelancer'
 import NotificationsClient from './pages/NotificationsClient'
 import ProposalCreate from './pages/ProposalCreate'
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/myjobs" element={<JobPage />} />
           <Route path="/freelancers" element={<FreelancersPage />} />
           <Route path="/profile/edit" element={<ProfileEdit />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/proposals/me" element={<ProposalsMe />} />
           <Route path="/notifications" element={<NotificationsFreelancer />} />
           <Route path="/notifications/sent" element={<NotificationsClient />} />

@@ -39,13 +39,17 @@ router.post('/', async (req, res) => {
       message
     })
 
+
     const populated = await invite.populate([
       { path: 'job', select: 'title' },
       { path: 'client', select: 'name email' },
-      { path: 'freelancer', select: 'name email' }
+      { path: 'freelancer', select: 'name email' },
     ])
+    // Add freelancer profile
+    const profile = await (await import('../models/Profile.js')).default.findOne({ user: freelancerId }).lean();
+    const invitationWithProfile = { ...populated.toObject(), freelancerProfile: profile };
 
-    res.status(201).json({ ok: true, invitation: populated })
+    res.status(201).json({ ok: true, invitation: invitationWithProfile })
   } catch (e) {
     res.status(500).json({ ok: false, message: e.message })
   }
@@ -65,7 +69,13 @@ router.get('/me', async (req, res) => {
         { path: 'client', select: 'name email' },
         { path: 'freelancer', select: 'name email' }
       ])
-    res.json({ ok: true, invitations: list })
+    // Attach profile for each invitation
+    const Profile = (await import('../models/Profile.js')).default;
+    const invitationsWithProfiles = await Promise.all(list.map(async (inv) => {
+      const profile = await Profile.findOne({ user: inv.freelancer._id }).lean();
+      return { ...inv.toObject(), freelancerProfile: profile };
+    }));
+    res.json({ ok: true, invitations: invitationsWithProfiles })
   } catch (e) {
     res.status(500).json({ ok: false, message: e.message })
   }
@@ -85,7 +95,13 @@ router.get('/sent', async (req, res) => {
         { path: 'client', select: 'name email' },
         { path: 'freelancer', select: 'name email' }
       ])
-    res.json({ ok: true, invitations: list })
+    // Attach profile for each invitation
+    const Profile = (await import('../models/Profile.js')).default;
+    const invitationsWithProfiles = await Promise.all(list.map(async (inv) => {
+      const profile = await Profile.findOne({ user: inv.freelancer._id }).lean();
+      return { ...inv.toObject(), freelancerProfile: profile };
+    }));
+    res.json({ ok: true, invitations: invitationsWithProfiles })
   } catch (e) {
     res.status(500).json({ ok: false, message: e.message })
   }

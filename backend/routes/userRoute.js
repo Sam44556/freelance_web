@@ -27,6 +27,7 @@ router.post("/register", async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		const hashed = await bcrypt.hash(password, salt);
 
+
 		const user = await User.create({
 			name,
 			email,
@@ -34,6 +35,12 @@ router.post("/register", async (req, res) => {
 			role,
 			provider: "credentials",
 		});
+
+		// Auto-create profile for freelancers
+		if (role === 'freelancer') {
+			const Profile = (await import('../models/Profile.js')).default;
+			await Profile.create({ user: user._id, title: '', bio: '', skills: [], hourlyRate: 0, location: '', avatar: '' });
+		}
 
 		const token = jwt.sign(
 			{ id: user._id, role: user.role },
